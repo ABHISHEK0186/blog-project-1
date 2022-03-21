@@ -19,10 +19,6 @@ const createBlog = async function (req, res) {
             // returning 400 {bad request data is empty}
             return res.status(400).send({ status: false, msg: "Bad request. Content to post missing" })
         const {title , body , authorId, category}= data
-        if (!isValid(title)) { return res.status(400).send({ status: false, msg: "Title is required" }) }
-        if (!isValid(body)) { return res.status(400).send({ status: false, msg: "Body is required" }) }
-        if (!isValid(authorId)) { return res.status(400).send({ status: false, msg: "Author id is required" }) }
-        if (!isValid(category)) { return res.status(400).send({ status: false, msg: "Category is required" }) }
 
 
         let idMatch = await AuthorModel.findById(id)
