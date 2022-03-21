@@ -24,7 +24,8 @@ const authorSchema = new mongoose.Schema({
             },
             message: "Please enter a valid email"
         },
-        unique: true
+        unique: true,
+        required: "Email is required"
     },
     password: {
         type: String,
