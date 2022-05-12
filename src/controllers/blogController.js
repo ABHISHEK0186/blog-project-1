@@ -157,7 +157,7 @@ const deleted = async function (req, res) {
         let deletedBlog = await BlogModel.findOneAndUpdate({ _id: blog_Id },
             { $set: { isDeleted: true, deletedAt: new Date() } }, { new: true })
         //Sending the Deleted response after updating isDeleted : true
-        return res.status(200).send({ status: true, data: deletedBlog })
+        return res.status(200).send({ status: true, msg: "Blog deleted succesfully" })
     }
     catch (err) {
         console.log("This is the error :", err.message)
@@ -168,7 +168,7 @@ const deleted = async function (req, res) {
 const Qdeleted = async function (req, res) {
     try {
         const filters = req.query
-        if (Object.keys(data) == 0) return res.status(400).send({ status: false, msg: "No input provided" })
+        if (Object.keys(filters) == 0) return res.status(400).send({ status: false, msg: "No input provided" })
         
          if (filters.category != undefined) {
             if (!isValid(filters.category)) return res.status(400).send({ status: false, msg: 'please provide category' })
@@ -197,7 +197,7 @@ const Qdeleted = async function (req, res) {
         
         if (!deleteBYquery) return res.status(404).send({ status: false, msg: "no such blog found" })
         
-        return res.status(200).send({ status: true, msg: deleteBYquery })
+        return res.status(200).send({ status: true, msg: 'Blog deleted successfully' })
     }
 
 
