@@ -122,7 +122,7 @@ const updateBlog = async function (req, res) {
         }
 
 
-        let updatedBlog = await blogModel.findOneAndUpdate({ _id: blogId },
+        let updatedBlog = await BlogModel.findOneAndUpdate({ _id: blogId },
             {
                 $set: { title: Title, body: Body, isPublished: true, publishedAt: new Date() },
                 $addToSet: { subcategory: Subcategory, tags: Tags }
@@ -185,11 +185,11 @@ const Qdeleted = async function (req, res) {
             if (!isValid(filters.isPublished)) return res.status(400).send({ status: false, msg: 'please provide isPublished' })
         }
         
-        const blog = await blogModel.find(filters)
+        const blog = await BlogModel.find(filters)
         if (!blog.length > 0) return res.status(404).send({ msg: "No blog exist with given filters " })
 
         // checking if blog already deleted 
-        let blogs = await blogModel.find({ authorId: req.query.authorId , isDeleted : false})
+        let blogs = await BlogModel.find({ authorId: req.query.authorId , isDeleted : false})
         if (!blogs.length > 0) return res.status(400).send({ status: false, msg: "Blogs are already deleted" })
         
         const deleteBYquery = await BlogModel.updateMany({ $and : [data , {isPublished : false} ]}, { isDeleted: true, deletedAt: new Date() }, { new: true })
