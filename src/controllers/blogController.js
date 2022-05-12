@@ -5,7 +5,6 @@ const AuthorModel = require("../models/authorModel")
 
 const isValid= function(value){
     if(typeof (value) === undefined || typeof (value) === null) {return false}
-    if(typeof (value).trim().length==0) {return false}
     if(typeof (value) === "string" && (value).trim().length>0) {return true}
 }
 
@@ -38,7 +37,7 @@ const createBlog = async function (req, res) {
 
         if (!isValid(title)) return res.status(400).send({ status: false, msg: 'please provide title' })
 
-        if (!isValid(category)) return res.status(400).send({ status: false, msg: 'please provide category' })
+        if (!isArray(category)) return res.status(400).send({ status: false, msg: 'please provide category' })
 
         if (!isValid(body)) return res.status(400).send({ status: false, msg: 'please provide body' })
 
