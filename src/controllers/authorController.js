@@ -19,7 +19,7 @@ const createAuthor = async function (req, res) {
 
         if (!isValid(title)) { return res.status(400).send({ status: false, msg: "Title is required" }) }
 
-        if ( !(title == "Mr" || data.title == "Miss" || data.title == "Mrs")){
+        if ( !(title == "Mr" || title == "Miss" || title == "Mrs")){
             return res.status(400).send({ status: false, message: 'please provide valid title ( Mr , Mrs or Miss)' })}
 
         if (!isValid(email)) { return res.status(400).semd({ status: false, msg: "Email is required" }) }
