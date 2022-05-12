@@ -25,6 +25,9 @@ const createAuthor = async function (req, res) {
 
         if (!(/^\w+([\.-]?\w+)*@\w+([\.-]?\w+)*(\.\w{2,3})+$/.test(email))) {
             return res.status(400).send({ status: false, message: 'please provide valid email' })}
+        
+        let emailMatch = await AuthorModel.findOne({ email })
+        if (emailMatch) return res.status(400).send({ status: false, message: "This eamil is already in use,please provide another email or login" })
 
         if (!isValid(password)) { return res.status(400).send({ status: false, msg: "Password is required" }) }
         let savedData = await AuthorModel.create(data)
