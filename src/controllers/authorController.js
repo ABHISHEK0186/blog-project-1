@@ -14,9 +14,19 @@ const createAuthor = async function (req, res) {
         const { fname, lname, title, email, password } = data
 
         if (!isValid(fname)) { return res.status(400).send({ status: false, msg: "First name is required" }) }
+
         if (!isValid(lname)) { return res.status(400).send({ status: false, msg: "Last name is required" }) }
+
         if (!isValid(title)) { return res.status(400).send({ status: false, msg: "Title is required" }) }
+
+        if ( !(title == "Mr" || data.title == "Miss" || data.title == "Mrs")){
+            return res.status(400).send({ status: false, message: 'please provide valid title ( Mr , Mrs or Miss)' })}
+
         if (!isValid(email)) { return res.status(400).semd({ status: false, msg: "Email is required" }) }
+
+        if (!(/^\w+([\.-]?\w+)*@\w+([\.-]?\w+)*(\.\w{2,3})+$/.test(email))) {
+            return res.status(400).send({ status: false, message: 'please provide valid email' })}
+
         if (!isValid(password)) { return res.status(400).send({ status: false, msg: "Password is required" }) }
         let savedData = await AuthorModel.create(data)
         return res.status(201).send({ msg: savedData })
