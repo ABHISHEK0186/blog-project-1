@@ -167,10 +167,36 @@ const deleted = async function (req, res) {
 
 const Qdeleted = async function (req, res) {
     try {
-        const data = req.query
+        const filters = req.query
         if (Object.keys(data) == 0) return res.status(400).send({ status: false, msg: "No input provided" })
+        
+         if (filters.category != undefined) {
+            if (!isValid(filters.category)) return res.status(400).send({ status: false, msg: 'please provide category' })
+        }
+        if (filters.subcategory != undefined) {
+            if (!isValid(filters.subcategory)) return res.status(400).send({ status: false, msg: 'please provide subcategory' })
+        }
+        if (filters.tags != undefined) {
+            if (!isValid(filters.tags)) return res.status(400).send({ status: false, msg: 'please provide tags' })
+        }
+        if (filters.authorId != undefined) {
+            if (!isValid(filters.authorId)) return res.status(400).send({ status: false, msg: 'please provide authorId' })
+        }
+        if (filters.isPublished != undefined) {
+            if (!isValid(filters.isPublished)) return res.status(400).send({ status: false, msg: 'please provide isPublished' })
+        }
+        
+        const blog = await blogModel.find(filters)
+        if (!blog.length > 0) return res.status(404).send({ msg: "No blog exist with given filters " })
+
+        // checking if blog already deleted 
+        let blogs = await blogModel.find({ authorId: req.query.authorId , isDeleted : false})
+        if (!blogs.length > 0) return res.status(400).send({ status: false, msg: "Blogs are already deleted" })
+        
         const deleteBYquery = await BlogModel.updateMany({ $and : [data , {isPublished : false} ]}, { isDeleted: true, deletedAt: new Date() }, { new: true })
+        
         if (!deleteBYquery) return res.status(404).send({ status: false, msg: "no such blog found" })
+        
         return res.status(200).send({ status: true, msg: deleteBYquery })
     }
 
